@@ -35,3 +35,5 @@ A partir dessa pasta, você pode executar os comandos:
 Este projeto foi criado como um projeto Java pelo VS Code. As configurações do projeto encontram-se em `.vscode/settings.json`.
 
 Este projeto também já está configurado para funcionar com a extensão `ANTLR4 grammar syntax support`, que facilita bastante a criação e depuração da gramática pela criação de uma árvore de derivação dentro do próprio VS Code. Para experientar, depois de instalar a extensão, abra o arquivo `src/gram/TLang.g4` e pressione `F5`. 
+
+Se quiser retornar à idade da pedra, um tutorial sobre a configuração dos comandos `antlr4` e `grun` pode ser encontrado [aqui](https://github.com/antlr/antlr4/blob/master/doc/getting-started.md#windows).
