@@ -1,6 +1,8 @@
+:: Gera os analisadores léxico e sintático a partir da gramática
 cls
-chcp 65001
 cd ..
+:: Gerando lexer e parser no diretório src/antlr
 java -jar lib\antlr-4.10.1-complete.jar -package antlr -o src\antlr -Xexact-output-dir src\gram\*.g4
+:: Compilando lexer e parser
 javac -cp .;lib\antlr-4.10.1-complete.jar src\antlr\*.java
 cd scripts

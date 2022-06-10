@@ -9,7 +9,9 @@ public class TLangAnalisadorSemantico extends TLangBaseListener {
 
 	/**
 	 *  id@escopo: Tipo.NUMERO
-	 *  chave2: valor2
+	 *  id2@escopo: Tipo.BOOLEANO
+	 *  id3@escopo: Tipo.TEXTO
+	 *  ...
 	 */
   private HashMap<String, Tipo> ids = new HashMap<>();
 	/**
@@ -18,6 +20,12 @@ public class TLangAnalisadorSemantico extends TLangBaseListener {
   private Stack<Integer> escopo = new Stack<>();
 
 	private int contadorErros = 0; 
+
+	private String obterChave(String id) {
+		return id + '@' + this.escopo.peek().toString();
+	}
+
+	// Métodos públicos
 
 	public int obterEscopoAtual() {
 		if (!this.escopo.isEmpty()) return this.escopo.peek();
@@ -53,10 +61,6 @@ public class TLangAnalisadorSemantico extends TLangBaseListener {
 	public void declarar(String id, Tipo tipo) {
 		String chave = this.obterChave(id);
 		this.ids.put(chave, tipo);
-	}
-
-	private String obterChave(String id) {
-		return id + '@' + this.escopo.peek().toString();
 	}
 
 	public void inspecionarIds() {

@@ -1,5 +1,3 @@
-grammar TLang;
-
 /**
 Requisitos mínimos:
 OK • Deve ter 3 tipos de variáveis
@@ -11,11 +9,12 @@ disponibilizados.
 OK • A parte de expressões envolvendo os operadores matemáticos deve ser realizada de maneira
 correta, respeitando a precedência. Não é necessário gerar a resposta da expressão, basta
 cuidar da precedência entre os operadores matemáticos através da gramática;
-• A cada utilização de uma variável, é necessário verificar se ela já foi declarada.
-• As atribuições também devem ser realizadas;
-– É necessário verificar se é possível realizar as operações, devido aos tipos das variáveis e ao seu
+OK • A cada utilização de uma variável, é necessário verificar se ela já foi declarada.
+OK • As atribuições também devem ser realizadas; – É necessário verificar se é possível realizar as operações, devido aos tipos das variáveis e ao seu
 escopo.
 */
+
+grammar TLang;
 
 iniciar: bloco;
 
@@ -27,10 +26,10 @@ op_atr: ATR;
 
 op_atr_num
   : op_atr 
-  | SOMA_ATR 
-  | SUB_ATR 
-  | MULT_ATR 
-  | DIV_ATR
+  | SOMA_ATR  // x += y
+  | SUB_ATR   // x -= y
+  | MULT_ATR  // x *= y
+  | DIV_ATR   // x /= y
   ;
 
 op_atr_txt
@@ -83,10 +82,10 @@ atr
 
 atr_num
   : id op_atr_num (id|num|expr_aritm|leitura_num) 
-  | id op_inc 
-  | op_inc id 
-  | id op_dec 
-  | op_dec id
+  | id op_inc // x++
+  | op_inc id // ++x
+  | id op_dec // x--
+  | op_dec id // --x
   ;
 
 atr_txt: id op_atr_txt (id|expr_txt|leitura_txt);
@@ -95,9 +94,9 @@ atr_bool: id op_atr (id|expr_bool|leitura_bool);
 // Declaração
 
 decl
-  : tipo id 
-  | t_numero atr_num
-  | t_texto atr_txt
+  : tipo id               // numero x
+  | t_numero atr_num      // numero x = 2
+  | t_texto atr_txt       
   | t_booleano atr_bool
   ;
 
@@ -112,13 +111,12 @@ leitura
 leitura_num: leia_num paren_e paren_d;
 leitura_txt: leia_txt paren_e paren_d;
 leitura_bool: leia_bool paren_e paren_d;
-escrita: escreva paren_e expr paren_d;
+escrita: escreva paren_e (id|expr) paren_d;
 
 // Expressões
 
 expr
 	: expr_bool
-  | expr_rel
   | expr_aritm 
 	| expr_txt
 	;
@@ -133,7 +131,7 @@ termo_bool
   | paren_e expr_bool paren_d
   ;
 
-expr_rel: termo_rel (op_maiorq termo_rel | op_menorq termo_rel | op_maiorig termo_rel | op_menorig termo_rel ); 
+expr_rel: termo_rel (op_maiorq termo_rel | op_menorq termo_rel | op_maiorig termo_rel | op_menorig termo_rel); 
 termo_rel
   : id
   | expr_aritm
@@ -159,7 +157,7 @@ expr_txt: (txt|id) (op_soma txt)*;
 
 // Estruturas de controle
 
-estr_cond: se paren_e expr_bool paren_d chave_e bloco chave_d estr_cond_sec* estr_cond_alt?;
+estr_cond: se paren_e expr_bool paren_d chave_e bloco chave_d estr_cond_sec* estr_cond_alt?; // se () {} senaose () {} senao () {}
 estr_cond_sec: senaose paren_e expr_bool paren_d chave_e bloco chave_d;
 estr_cond_alt: senao chave_e bloco chave_d;
 

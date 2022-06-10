@@ -1,4 +1,4 @@
-// Generated from c:\Users\cmlima\Desenvolvimento\UAM\COMPILADORES\projeto-tlang\src\gram\TLang.g4 by ANTLR 4.9.2
+// Generated from c:\Users\cmlima\Desenvolvimento\UAM\COMPILADORES\tlang\src\gram\TLang.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

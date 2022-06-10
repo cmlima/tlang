@@ -77,8 +77,8 @@ public class TLangTradutor extends TLangBaseListener {
   @Override public void enterDecl(TLangParser.DeclContext ctx) {
 		identar();
 
-		numeroLinha = ctx.getStart().getLine();
-		textoLinha = ctx.getText();
+		this.numeroLinha = ctx.getStart().getLine();
+		this.textoLinha = ctx.getText();
 
     TLangAnalisadorSemantico.Tipo tipo;
     String id;
@@ -88,11 +88,11 @@ public class TLangTradutor extends TLangBaseListener {
       id = ctx.id().ID().getText();
 			col = ctx.id().getStart().getCharPositionInLine();
       if (ctx.tipo().t_booleano() != null) {
-        tipo = booleano;
+        tipo = booleano; // TLangAnalisadorSemantico.Tipo.BOOLEANO
       } else if (ctx.tipo().t_numero() != null) {
-        tipo = numero;
+        tipo = numero; // TLangAnalisadorSemantico.Tipo.NUMERO
       } else {
-        tipo = texto;
+        tipo = texto; // TLangAnalisadorSemantico.Tipo.TEXTO
       }
     } else if (ctx.atr_bool() != null) {
       id = ctx.atr_bool().id(0).ID().getText();
@@ -109,7 +109,7 @@ public class TLangTradutor extends TLangBaseListener {
     }
 
 		if (analisadorSemantico.declarado(id)) {
-			analisadorSemantico.erroJaDeclarado(id, numeroLinha, col, textoLinha);
+			analisadorSemantico.erroJaDeclarado(id, this.numeroLinha, col, this.textoLinha);
 		} else {
 			analisadorSemantico.declarar(id, tipo);
 		}
@@ -123,30 +123,30 @@ public class TLangTradutor extends TLangBaseListener {
 	@Override public void enterAtr(TLangParser.AtrContext ctx) {
 		identar();
 
-		numeroLinha = ctx.getStart().getLine();
-		textoLinha = ctx.getText();
+		this.numeroLinha = ctx.getStart().getLine();
+		this.textoLinha = ctx.getText();
 	}
 
 	@Override public void exitAtr(TLangParser.AtrContext ctx) { 
-		if (ctx.atr_bool() != null) {
-			String id = ctx.atr_bool().id(0).ID().getText();
-			int col = ctx.atr_bool().id(0).getStart().getCharPositionInLine();
-			if (analisadorSemantico.obterTipo(id) != booleano) {
-				analisadorSemantico.erroTipo(id, numeroLinha, col, textoLinha, booleano);
-			}
-		} else if (ctx.atr_num() != null) {
-			String id = ctx.atr_num().id(0).ID().getText();
-			int col = ctx.atr_num().id(0).getStart().getCharPositionInLine();
-			if (analisadorSemantico.obterTipo(id) != numero) {
-				analisadorSemantico.erroTipo(id, numeroLinha, col, textoLinha, numero);
-			}
-		} else if (ctx.atr_txt() != null) {
-			String id = ctx.atr_txt().id(0).ID().getText();
-			int col = ctx.atr_txt().id(0).getStart().getCharPositionInLine();
-			if (analisadorSemantico.obterTipo(id) != texto) {
-				analisadorSemantico.erroTipo(id, numeroLinha, col, textoLinha, texto);
-			}
-		}
+		// if (ctx.atr_bool() != null) {
+		// 	String id = ctx.atr_bool().id(0).ID().getText();
+		// 	int col = ctx.atr_bool().id(0).getStart().getCharPositionInLine();
+		// 	if (analisadorSemantico.obterTipo(id) != booleano) {
+		// 		analisadorSemantico.erroTipo(id, numeroLinha, col, textoLinha, booleano);
+		// 	}
+		// } else if (ctx.atr_num() != null) {
+		// 	String id = ctx.atr_num().id(0).ID().getText();
+		// 	int col = ctx.atr_num().id(0).getStart().getCharPositionInLine();
+		// 	if (analisadorSemantico.obterTipo(id) != numero) {
+		// 		analisadorSemantico.erroTipo(id, numeroLinha, col, textoLinha, numero);
+		// 	}
+		// } else if (ctx.atr_txt() != null) {
+		// 	String id = ctx.atr_txt().id(0).ID().getText();
+		// 	int col = ctx.atr_txt().id(0).getStart().getCharPositionInLine();
+		// 	if (analisadorSemantico.obterTipo(id) != texto) {
+		// 		analisadorSemantico.erroTipo(id, numeroLinha, col, textoLinha, texto);
+		// 	}
+		// }
 
 		linha(";");
 	}
@@ -159,42 +159,59 @@ public class TLangTradutor extends TLangBaseListener {
 			TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
 			if (tipo != null) {
 				if (tipo != numero) {
-					analisadorSemantico.erroTipo(id, numeroLinha, col, textoLinha, numero);
+					analisadorSemantico.erroTipo(id, this.numeroLinha, col, this.textoLinha, numero);
 				}
 			} else {
-				analisadorSemantico.erroNaoDeclarado(id, numeroLinha, col, textoLinha);
+				analisadorSemantico.erroNaoDeclarado(id, this.numeroLinha, col, this.textoLinha);
 			}
 		}
 	}
 
 	@Override public void exitAtr_txt(TLangParser.Atr_txtContext ctx) { 
-
 		for (int i = 0; i < ctx.id().size(); i++) {
 			String id = ctx.id(i).getText();
 			int col = ctx.id(i).getStart().getCharPositionInLine();
 			TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
 			if (tipo != null) {
 				if (tipo != texto) {
-					analisadorSemantico.erroTipo(id, numeroLinha, col, textoLinha, texto);
+					analisadorSemantico.erroTipo(id, this.numeroLinha, col, this.textoLinha, texto);
 				}
 			} else {
-				analisadorSemantico.erroNaoDeclarado(id, numeroLinha, col, textoLinha);
+				analisadorSemantico.erroNaoDeclarado(id, this.numeroLinha, col, this.textoLinha);
 			}
 		}
 	}
 
 	@Override public void exitAtr_bool(TLangParser.Atr_boolContext ctx) { 
-		String id = ctx.id(0).ID().getText();
-		int col = ctx.id(0).getStart().getCharPositionInLine();
-		TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
-		if (tipo != null) {
-			if (tipo != booleano) {
-				analisadorSemantico.erroTipo(id, numeroLinha, col, textoLinha, booleano);
+		for (int i = 0; i < ctx.id().size(); i++) {
+			String id = ctx.id(i).getText();
+			int col = ctx.id(i).getStart().getCharPositionInLine();
+			TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
+			if (tipo != null) {
+				if (tipo != booleano) {
+					analisadorSemantico.erroTipo(id, this.numeroLinha, col, this.textoLinha, booleano);
+				}
+			} else {
+				analisadorSemantico.erroNaoDeclarado(id, this.numeroLinha, col, this.textoLinha);
 			}
-		} else {
-			analisadorSemantico.erroNaoDeclarado(id, numeroLinha, col, textoLinha);
 		}
 	}
+
+	@Override public void exitTermo_bool(TLangParser.Termo_boolContext ctx) {
+		if (ctx.id() != null) {
+			String id = ctx.id().ID().getText();
+			int col = ctx.id().getStart().getCharPositionInLine();
+			TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
+			if (tipo != null) {
+				if (tipo != booleano) {
+					analisadorSemantico.erroTipo(id, this.numeroLinha, col, this.textoLinha, booleano);
+				}
+			} else {
+				analisadorSemantico.erroNaoDeclarado(id, this.numeroLinha, col, this.textoLinha);
+			}
+		}
+	}
+
 
 	@Override public void exitTermo_rel(TLangParser.Termo_relContext ctx) {
 		if (ctx.id() != null) {
@@ -203,14 +220,13 @@ public class TLangTradutor extends TLangBaseListener {
 			TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
 			if (tipo != null) {
 				if (tipo != numero) {
-					analisadorSemantico.erroTipo(id, numeroLinha, col, textoLinha, numero);
+					analisadorSemantico.erroTipo(id, this.numeroLinha, col, this.textoLinha, numero);
 				}
 			} else {
-				analisadorSemantico.erroNaoDeclarado(id, numeroLinha, col, textoLinha);
+				analisadorSemantico.erroNaoDeclarado(id, this.numeroLinha, col, this.textoLinha);
 			}
 		}
 	}
-
 
 	@Override public void exitTermo_ig(TLangParser.Termo_igContext ctx) { 
 		if (ctx.id() != null) {
@@ -219,10 +235,40 @@ public class TLangTradutor extends TLangBaseListener {
 			TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
 			if (tipo != null) {
 				if (tipo != numero) {
-					analisadorSemantico.erroTipo(id, numeroLinha, col, textoLinha, numero);
+					analisadorSemantico.erroTipo(id, this.numeroLinha, col, this.textoLinha, numero);
 				}
 			} else {
-				analisadorSemantico.erroNaoDeclarado(id, numeroLinha, col, textoLinha);
+				analisadorSemantico.erroNaoDeclarado(id, this.numeroLinha, col, this.textoLinha);
+			}
+		}
+	}
+
+	@Override public void exitTermo(TLangParser.TermoContext ctx) { 
+		if (ctx.id() != null) {
+			String id = ctx.id().ID().getText();
+			int col = ctx.id().getStart().getCharPositionInLine();
+			TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
+			if (tipo != null) {
+				if (tipo != numero) {
+					analisadorSemantico.erroTipo(id, this.numeroLinha, col, this.textoLinha, numero);
+				}
+			} else {
+				analisadorSemantico.erroNaoDeclarado(id, this.numeroLinha, col, this.textoLinha);
+			}
+		}
+	}
+
+	@Override public void exitExpr_txt(TLangParser.Expr_txtContext ctx) { 
+		if (ctx.id() != null) {
+			String id = ctx.id().ID().getText();
+			int col = ctx.id().getStart().getCharPositionInLine();
+			TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
+			if (tipo != null) {
+				if (tipo != texto) {
+					analisadorSemantico.erroTipo(id, this.numeroLinha, col, this.textoLinha, texto);
+				}
+			} else {
+				analisadorSemantico.erroNaoDeclarado(id, this.numeroLinha, col, this.textoLinha);
 			}
 		}
 	}
@@ -230,8 +276,8 @@ public class TLangTradutor extends TLangBaseListener {
 	@Override public void enterLeitura(TLangParser.LeituraContext ctx) { 
 		identar();
 
-		numeroLinha = ctx.getStart().getLine();
-		textoLinha = ctx.getText();
+		this.numeroLinha = ctx.getStart().getLine();
+		this.textoLinha = ctx.getText();
 	}
 
 	@Override public void exitLeitura(TLangParser.LeituraContext ctx) { 
@@ -241,8 +287,8 @@ public class TLangTradutor extends TLangBaseListener {
 	@Override public void enterEscrita(TLangParser.EscritaContext ctx) { 
 		identar();
 
-		numeroLinha = ctx.getStart().getLine();
-		textoLinha = ctx.getText();
+		this.numeroLinha = ctx.getStart().getLine();
+		this.textoLinha = ctx.getText();
 	}
 
 	@Override public void exitEscrita(TLangParser.EscritaContext ctx) { 
@@ -252,8 +298,8 @@ public class TLangTradutor extends TLangBaseListener {
 	@Override public void enterEstr_cond(TLangParser.Estr_condContext ctx) { 
 		identar();
 
-		numeroLinha = ctx.getStart().getLine();
-		textoLinha = ctx.getText();
+		this.numeroLinha = ctx.getStart().getLine();
+		this.textoLinha = ctx.getText();
 	}
 
 	@Override public void exitEstr_cond(TLangParser.Estr_condContext ctx) { 
@@ -261,8 +307,8 @@ public class TLangTradutor extends TLangBaseListener {
 	}
 
 	@Override public void enterEstr_cond_sec(TLangParser.Estr_cond_secContext ctx) { 
-		numeroLinha = ctx.getStart().getLine();
-		textoLinha = ctx.getText();
+		this.numeroLinha = ctx.getStart().getLine();
+		this.textoLinha = ctx.getText();
 	}
 
 	@Override public void exitEstr_cond_sec(TLangParser.Estr_cond_secContext ctx) { 
@@ -270,8 +316,8 @@ public class TLangTradutor extends TLangBaseListener {
 	}
 
 	@Override public void enterEstr_cond_alt(TLangParser.Estr_cond_altContext ctx) { 
-		numeroLinha = ctx.getStart().getLine();
-		textoLinha = ctx.getText();
+		this.numeroLinha = ctx.getStart().getLine();
+		this.textoLinha = ctx.getText();
 	}
 
 	@Override public void exitEstr_cond_alt(TLangParser.Estr_cond_altContext ctx) { 
@@ -281,8 +327,8 @@ public class TLangTradutor extends TLangBaseListener {
 	@Override public void enterEstr_repet(TLangParser.Estr_repetContext ctx) { 
 		identar();
 
-		numeroLinha = ctx.getStart().getLine();
-		textoLinha = ctx.getText();
+		this.numeroLinha = ctx.getStart().getLine();
+		this.textoLinha = ctx.getText();
 	}
 
 	@Override public void exitEstr_repet(TLangParser.Estr_repetContext ctx) { 
@@ -449,7 +495,7 @@ public class TLangTradutor extends TLangBaseListener {
 			String id = ctx.contr_id().ID().getText();
 			int col = ctx.contr_id().getStart().getCharPositionInLine();
 			if (analisadorSemantico.declarado(id)) {
-				analisadorSemantico.erroJaDeclarado(id, numeroLinha, col, textoLinha);
+				analisadorSemantico.erroJaDeclarado(id, this.numeroLinha, col, this.textoLinha);
 			}
 			int de = Integer.parseInt(ctx.contr_num(0).NUM().getText());
 			int ate = Integer.parseInt(ctx.contr_num(1).NUM().getText());

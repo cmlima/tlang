@@ -1,5 +1,5 @@
+:: Executa o arquivo .java gerado a partir do código .tlang
 cls
-chcp 65001
 cd ../test
 javac -cp . Codigo.java
 java Codigo

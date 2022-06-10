@@ -15,6 +15,8 @@ O diretório `src` tem as seguintes subpastas:
 - `antlr`: contém os arquivos gerados pelo antlr4 a partir da gramática
 - `gram`: contém a gramática
 
+## Iniciando
+
 Para iniciar, entre na pasta `scripts`:
 
 ````
@@ -27,10 +29,14 @@ cmd.exe
 
 A partir dessa pasta, você pode executar os comandos:
 
+- `iniciar` para iniciar o antlr4 no projeto atual
+- `iniciar-uam` para iniciar o antlr4 no projeto atual quando no ambiente da UAM
 - `gerar` para que o antlr4 gere o Lexer e Parser a partir da gramática na pasta `src/atlr`
 - `arvore` para visualizar a árvore decorrente da aplicação do parser ao arquivo `test/teste.tlang`
 - `compilar` para que o arquivo `teste.tlang` seja traduzido para a linguagem Java, gerando o arquivo `test/Codigo.java`
 - `testar` para compilar e executar o arquivo `test/Codigo.java`
+
+## Observações
 
 Este projeto foi criado como um projeto Java pelo VS Code. As configurações do projeto encontram-se em `.vscode/settings.json`.
 
