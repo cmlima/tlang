@@ -1,0 +1,63 @@
+/*
+ *  Meu código em TLang
+ */
+
+booleano __yes = verdadeiro && falso || (x > y) || (2+2 >= 4)
+booleano no__ = !__yes
+numero z = 10
+numero x
+x = 5.45
+numero minhaVariavel = 1 - 34 * 2 + 2 / 3
+numero minhaNovaVariavel = x
+texto meuTexto = "Ola, eu sou uma longa cadeia de caracteres\n com mais de uma linha" + "mais um trecho" + "outro trecho"
+booleano ok = verdadeiro
+
+se (x == 3) {
+  minhaVariavel = 3.34
+} senao {
+  minhaVariavel = 4
+}
+
+// estrutura condicional complexa
+se (x == 3) {
+  minhaVariavel = 3.2
+  minhaNovaVariavel = 4
+} senaose (x == 4) {
+  minhaVariavel = -4.67
+  se (ok == verdadeiro) {
+    minhaNovaVariavel = 20
+	texto meuNovoTexto = "isto eh um novo texto"
+	booleano meuValorBooleano = falso && verdadeiro || (!falso && !verdadeiro) && (falso == verdadeiro)
+	numero istoEhUmNumero = 34.78
+  }
+} senaose (x == 5) {
+  minhaVariavel = 5.72
+} senao {
+  minhaVariavel = 10
+  minhaNovaVariavel = 20
+  texto meuNovoTexto = "isto eh um novo texto" + "novo escopo"
+  booleano meuValorBooleano = falso
+  numero istoEhUmNumero = 34.78 + (34 * 2 / 5)
+}
+
+// estrutura de repetição
+enquanto (x < 5) {
+  x = 5
+  minhaNovaVariavel = -30.4
+}
+
+escreva("De 50 a -1")
+
+// estrutura de repetição
+de x = 50 ate -1 {
+  escreva(x)
+  minhaNovaVariavel = 60.14567
+}
+
+escreva("De -10 a 100")
+
+de x = -10 ate 100 {
+  escreva(x)
+  minhaNovaVariavel = 60.14567
+}
+

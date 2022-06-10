@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launch StreamReader",
+      "request": "launch",
+      "mainClass": "StreamReader",
+      "projectName": "projeto-tlang_733bdb9b"
+    },
+    {
+      "type": "java",
+      "name": "Launch FileReader",
+      "request": "launch",
+      "mainClass": "FileReader",
+      "projectName": "projeto-tlang_733bdb9b"
+    },
+    {
+      "name": "Depurar gramática ANTLR4",
+      "type": "antlr-debug",
+      "request": "launch",
+      "input": "test/teste.tlang",
+      "grammar": "src/gram/TLang.g4",
+      "startRule": "iniciar",
+      "printParseTree": true,
+      "visualParseTree": true
+    }
+  ]
+}
