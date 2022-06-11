@@ -32,9 +32,9 @@ A partir dessa pasta, você pode executar os comandos:
 - `iniciar` para iniciar o antlr4 no projeto atual
 - `iniciar-uam` para iniciar o antlr4 no projeto atual quando no ambiente da UAM
 - `gerar` para que o antlr4 gere o Lexer e Parser a partir da gramática na pasta `src/atlr`
-- `arvore` para visualizar a árvore de derivação (o arquivo `.lang` precisa estar na pasta `test` e você deve indicá-lo digitando `arvore <nome-arquivo-sem-extensão>`)
+- `arvore` para visualizar a árvore de derivação (o arquivo `.lang` precisa estar na pasta `test` e você deve indicá-lo digitando `arvore [nome-arquivo-sem-extensão]`)
 - `compilar` para traduzir todos os arquivos `.tlang` na pasta `test` para a linguagem Java
-- `testar` para compilar e executar um dos arquivos `java` na pasta `test` (você precisar indicar o arquivo digitando `testar <nome-arquivo-sem-extensão>`)
+- `testar` para compilar e executar um dos arquivos `java` na pasta `test` (você precisar indicar o arquivo digitando `testar [nome-arquivo-sem-extensão]`)
 
 ## Observações
 

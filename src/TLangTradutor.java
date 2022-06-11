@@ -58,6 +58,16 @@ public class TLangTradutor extends TLangBaseListener {
 	}
 
 	private void atualizarPosicao(ParserRuleContext ctx) {
+		/**
+		 * A posição é atualizada nas seguintes regras:
+		 * atr
+		 * decl
+		 * escrita
+		 * controle_cond
+		 * controle_cond_sec
+		 * controle_enquanto
+		 * controle_de_ate
+		 */
 		this.numeroLinha = ctx.getStart().getLine();
 		this.textoLinha = this.obterTextoIntegral(ctx).split("\\r\\n|\\n")[0];
 	}
