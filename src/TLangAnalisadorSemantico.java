@@ -71,10 +71,20 @@ public class TLangAnalisadorSemantico extends TLangBaseListener {
 		System.err.println("-----------------------");
 	}
 
+	public String obterIdsDoEscopo(int escopo) {
+		String output = "";
+		for (Entry<String, Tipo> entry: this.ids.entrySet()) {
+			if (entry.getKey().endsWith("@" + escopo)) {
+				output += (entry.getKey() + " -> " + entry.getValue().name() + "\n");
+			}
+		}
+		return output;
+	}
+
 	public void erroNaoDeclarado(String id, int linha, int col, String codigo) {
 		System.err.println("TLang:" + linha + ": erro: símbolo " + id + " não declarado");
 		System.err.println("\t" + codigo);
-		System.err.println("\t" + " ".repeat(col - 1) + "^");
+		System.err.println("\t" + " ".repeat(col) + "^");
 		System.err.println("");
 
 		this.contadorErros++;
@@ -83,7 +93,7 @@ public class TLangAnalisadorSemantico extends TLangBaseListener {
 	public void erroJaDeclarado(String id, int linha, int col, String codigo) {
 		System.err.println("TLang:" + linha + ": erro: a variável " + id + " já foi declarada");
 		System.err.println("\t" + codigo);
-		System.err.println("\t" + " ".repeat(col - 1) + "^");
+		System.err.println("\t" + " ".repeat(col) + "^");
 		System.err.println("");
 
 		this.contadorErros++;
@@ -92,7 +102,7 @@ public class TLangAnalisadorSemantico extends TLangBaseListener {
 	public void erroTipo(String id, int linha, int col, String codigo, Tipo esperado) {
 		System.err.println("TLang:" + linha + ": erro: a variável " + id + " não é de tipo " + esperado.name().toLowerCase());
 		System.err.println("\t" + codigo);
-		System.err.println("\t" + " ".repeat(col - 1) + "^");
+		System.err.println("\t" + " ".repeat(col) + "^");
 		System.err.println("");
 		
 		this.contadorErros++;
