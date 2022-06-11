@@ -488,6 +488,16 @@ public interface TLangListener extends ParseTreeListener {
 	 */
 	void exitEstr_cond(TLangParser.Estr_condContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link TLangParser#controle_cond}.
+	 * @param ctx the parse tree
+	 */
+	void enterControle_cond(TLangParser.Controle_condContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLangParser#controle_cond}.
+	 * @param ctx the parse tree
+	 */
+	void exitControle_cond(TLangParser.Controle_condContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TLangParser#estr_cond_sec}.
 	 * @param ctx the parse tree
 	 */
@@ -497,6 +507,16 @@ public interface TLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitEstr_cond_sec(TLangParser.Estr_cond_secContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLangParser#controle_cond_sec}.
+	 * @param ctx the parse tree
+	 */
+	void enterControle_cond_sec(TLangParser.Controle_cond_secContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLangParser#controle_cond_sec}.
+	 * @param ctx the parse tree
+	 */
+	void exitControle_cond_sec(TLangParser.Controle_cond_secContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TLangParser#estr_cond_alt}.
 	 * @param ctx the parse tree
@@ -527,6 +547,16 @@ public interface TLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitEstr_enquanto(TLangParser.Estr_enquantoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLangParser#controle_enquanto}.
+	 * @param ctx the parse tree
+	 */
+	void enterControle_enquanto(TLangParser.Controle_enquantoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLangParser#controle_enquanto}.
+	 * @param ctx the parse tree
+	 */
+	void exitControle_enquanto(TLangParser.Controle_enquantoContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TLangParser#estr_de_ate}.
 	 * @param ctx the parse tree

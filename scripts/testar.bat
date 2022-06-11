@@ -1,6 +1,6 @@
 :: Executa o arquivo .java gerado a partir do código .tlang
 cls
 cd ../test
-javac -cp . Codigo.java
-java Codigo
+javac -cp . %*.java
+java %*
 cd ../scripts

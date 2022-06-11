@@ -1,4 +1,9 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -10,21 +15,62 @@ import antlr.*;
 
 public class FileReader {
 
-    private static final String EXTENSION = "tlang";
-    private static final String DIRBASE = "../test/";
+    private static final String EXTENSAO = "tlang";
+    private static final String DIRETORIO = "../test/";
+
+    public static ArrayList<String> obterArquivos(final File dir, String ext) {
+        ArrayList<String> arquivos = new ArrayList<>();
+        for (final File fileEntry : dir.listFiles()) {
+            if (!fileEntry.isDirectory() && fileEntry.getName().endsWith(ext)) {
+                arquivos.add(fileEntry.getName());
+            }
+        }
+        return arquivos;
+    }
+
+    public static void redirecionarParaArquivo(final File arquivo) throws FileNotFoundException {
+        FileOutputStream output = new FileOutputStream(arquivo);
+        PrintStream ps = new PrintStream(output);
+        System.setOut(ps);
+    }
+
 
     public static void main(String[] args) throws IOException {
-        String files[] = args.length == 0 ? new String[] { "teste." + EXTENSION } : args;
-        for (String file : files){
-            CharStream in = CharStreams.fromFileName(DIRBASE + file);
+
+        final File dir = new File(DIRETORIO);
+        ArrayList<String> arquivos = obterArquivos(dir, "." + EXTENSAO);
+
+        if (arquivos.size() == 0) {
+            System.out.println("Nenhum arquivo localizado no diretório " + DIRETORIO);
+            return;
+        }
+
+        PrintStream console = System.out;
+
+        for (String arquivo : arquivos){
+            System.err.println("Compilando " + arquivo);
+
+            CharStream in = CharStreams.fromFileName(DIRETORIO + arquivo);
+
+            String nomeClasse = arquivo.substring(0, arquivo.lastIndexOf('.'));
+
+            String nomeArquivoJava = nomeClasse + ".java";
+            File arquivoJava = new File(DIRETORIO + nomeArquivoJava);
+            redirecionarParaArquivo(arquivoJava);
+
             TLangLexer lexer = new TLangLexer(in);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             TLangParser parser = new TLangParser(tokens);
             ParseTree tree = parser.iniciar();
 
-            TLangTradutor tradutor = new TLangTradutor();
+            TLangTradutor tradutor = new TLangTradutor(nomeClasse);
             ParseTreeWalker walker = new ParseTreeWalker();
             walker.walk(tradutor, tree);
+
+            System.err.println("");
         }
+
+        System.setOut(console);
+
     }
 }

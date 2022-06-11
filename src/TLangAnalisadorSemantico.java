@@ -2,10 +2,15 @@ import java.util.HashMap;
 import java.util.Stack;
 import java.util.Map.Entry;
 
-import antlr.*;
-
-public class TLangAnalisadorSemantico extends TLangBaseListener {
+public class TLangAnalisadorSemantico {
   static enum Tipo { NUMERO, TEXTO, BOOLEANO }
+
+	private String nomeDaClasse;
+
+	TLangAnalisadorSemantico(String nomeDaClasse) {
+		super();
+		this.nomeDaClasse = nomeDaClasse;
+	}
 
 	/**
 	 *  id@escopo: Tipo.NUMERO
@@ -81,31 +86,28 @@ public class TLangAnalisadorSemantico extends TLangBaseListener {
 		return output;
 	}
 
-	public void erroNaoDeclarado(String id, int linha, int col, String codigo) {
-		System.err.println("TLang:" + linha + ": erro: símbolo " + id + " não declarado");
+	private void imprimirErro(String mensagem, int linha, int col, String codigo) {
+		System.err.println(this.nomeDaClasse + ".tlang:" + linha + ": erro: " + mensagem);
 		System.err.println("\t" + codigo);
 		System.err.println("\t" + " ".repeat(col) + "^");
 		System.err.println("");
 
 		this.contadorErros++;
+	}
+
+	public void erroNaoDeclarado(String id, int linha, int col, String codigo) {
+		String mensagem = "variável " + id + " não declarada";
+		imprimirErro(mensagem, linha, col, codigo);
 	}
 
 	public void erroJaDeclarado(String id, int linha, int col, String codigo) {
-		System.err.println("TLang:" + linha + ": erro: a variável " + id + " já foi declarada");
-		System.err.println("\t" + codigo);
-		System.err.println("\t" + " ".repeat(col) + "^");
-		System.err.println("");
-
-		this.contadorErros++;
+		String mensagem = "variável " + id + " já declarada";
+		imprimirErro(mensagem, linha, col, codigo);
 	}
 
 	public void erroTipo(String id, int linha, int col, String codigo, Tipo esperado) {
-		System.err.println("TLang:" + linha + ": erro: a variável " + id + " não é de tipo " + esperado.name().toLowerCase());
-		System.err.println("\t" + codigo);
-		System.err.println("\t" + " ".repeat(col) + "^");
-		System.err.println("");
-		
-		this.contadorErros++;
+		String mensagem = "a variável " + id + " não é do tipo" + esperado.name().toLowerCase();
+		imprimirErro(mensagem, linha, col, codigo);
 	}
 
 	public void imprimirTotalErros() {

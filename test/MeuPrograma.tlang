@@ -1,0 +1,8 @@
+/*
+ *  Um contador simples em TLang
+ */
+
+de i = 0 ate 100 {
+  escreva(i)
+}
+

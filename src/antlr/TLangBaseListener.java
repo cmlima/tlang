@@ -592,6 +592,18 @@ public class TLangBaseListener implements TLangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterControle_cond(TLangParser.Controle_condContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitControle_cond(TLangParser.Controle_condContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterEstr_cond_sec(TLangParser.Estr_cond_secContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -599,6 +611,18 @@ public class TLangBaseListener implements TLangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEstr_cond_sec(TLangParser.Estr_cond_secContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterControle_cond_sec(TLangParser.Controle_cond_secContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitControle_cond_sec(TLangParser.Controle_cond_secContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -635,6 +659,18 @@ public class TLangBaseListener implements TLangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEstr_enquanto(TLangParser.Estr_enquantoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterControle_enquanto(TLangParser.Controle_enquantoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitControle_enquanto(TLangParser.Controle_enquantoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
