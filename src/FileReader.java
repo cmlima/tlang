@@ -15,6 +15,7 @@ import antlr.*;
 
 public class FileReader {
 
+    private static final boolean MODO_DEPURACAO = false;
     private static final String EXTENSAO = "tlang";
     private static final String DIRETORIO = "../test/";
 
@@ -63,7 +64,7 @@ public class FileReader {
             TLangParser parser = new TLangParser(tokens);
             ParseTree tree = parser.iniciar();
 
-            TLangTradutor tradutor = new TLangTradutor(nomeClasse);
+            TLangTradutor tradutor = new TLangTradutor(nomeClasse, MODO_DEPURACAO);
             ParseTreeWalker walker = new ParseTreeWalker();
             walker.walk(tradutor, tree);
 

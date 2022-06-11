@@ -18,7 +18,7 @@ public class StreamReader {
 		TLangParser parser = new TLangParser(tokens);
 		ParseTree tree = parser.iniciar();
 
-		TLangTradutor tradutor = new TLangTradutor("Codigo");
+		TLangTradutor tradutor = new TLangTradutor("Codigo", true);
 		ParseTreeWalker walker = new ParseTreeWalker();
 		walker.walk(tradutor, tree);
 

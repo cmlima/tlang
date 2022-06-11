@@ -1,0 +1,21 @@
+/*
+ *  Testando se os erros aparecem corretamente
+ */
+
+  numero x = 3
+  numero y = 10
+  numero z
+  texto w = "teste"
+  booleano t = verdadeiro
+  numero s
+  texto hoje
+  texto amanha = "amanhã"
+
+se (x > 1) {
+  escreva(x)
+} senaose (y < 10) {
+  z = w
+  t = s  
+} senao {
+  hoje = amanha
+}

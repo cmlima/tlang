@@ -1,33 +1,39 @@
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.misc.Interval;
 
 import antlr.*;
 
 public class TLangTradutor extends TLangBaseListener {
 
 	private String nomeDaClasse;
-	private int numeroLinha = 0;
-	private String textoLinha = ""; 
+	private boolean depurar = false;
 
 	private TLangAnalisadorSemantico analisadorSemantico;
 	private TLangAnalisadorSemantico.Tipo numero = TLangAnalisadorSemantico.Tipo.NUMERO;
 	private TLangAnalisadorSemantico.Tipo booleano = TLangAnalisadorSemantico.Tipo.BOOLEANO;
 	private TLangAnalisadorSemantico.Tipo texto = TLangAnalisadorSemantico.Tipo.TEXTO;
 
-	TLangTradutor(String nomeDaClasse) {
+	TLangTradutor(String nomeDaClasse, boolean depurar) {
 		super();
 		this.nomeDaClasse = nomeDaClasse;
+		this.depurar = depurar;
 		this.analisadorSemantico = new TLangAnalisadorSemantico(nomeDaClasse);
 	}
 
 	// Utilidades de depuração
 
 	private void imprimirEscopo() {
+		if (!depurar) return;
 		identar();
 		linha("// Escopo -> " + analisadorSemantico.obterEscopoAtual());
 	}
 
+	private void imprimirDeclaracao(String id, TLangAnalisadorSemantico.Tipo tipo) {
+		if (!depurar) return;
+		linha("// declaracao -> simb: " + id + ", tipo: " + tipo.name().toLowerCase());
+	}
+
 	private void imprimirIds() {
+		if (!depurar) return;
 		String ids = analisadorSemantico.obterIdsDoEscopo(analisadorSemantico.obterEscopoAtual());
 		if (ids.length() > 0) {
 			linha("");
@@ -47,29 +53,6 @@ public class TLangTradutor extends TLangBaseListener {
 			identar();
 			linha(" */");
 		}
-	}
-
-	// https://stackoverflow.com/questions/26524302/how-to-preserve-whitespace-when-we-use-text-attribute-in-antlr4
-	private String obterTextoIntegral(ParserRuleContext ctx) {
-    if (ctx.start == null || ctx.stop == null || ctx.start.getStartIndex() < 0 || ctx.stop.getStopIndex() < 0)
-        return ctx.getText();
-
-    return ctx.start.getInputStream().getText(Interval.of(ctx.start.getStartIndex(), ctx.stop.getStopIndex()));
-	}
-
-	private void atualizarPosicao(ParserRuleContext ctx) {
-		/**
-		 * A posição é atualizada nas seguintes regras:
-		 * atr
-		 * decl
-		 * escrita
-		 * controle_cond
-		 * controle_cond_sec
-		 * controle_enquanto
-		 * controle_de_ate
-		 */
-		this.numeroLinha = ctx.getStart().getLine();
-		this.textoLinha = this.obterTextoIntegral(ctx).split("\\r\\n|\\n")[0];
 	}
 
 	// Utilidades de formatação
@@ -145,15 +128,15 @@ public class TLangTradutor extends TLangBaseListener {
 
   @Override public void enterDecl(TLangParser.DeclContext ctx) {
 		identar();
-		atualizarPosicao(ctx);
+		analisadorSemantico.atualizarContexto(ctx);
 
     TLangAnalisadorSemantico.Tipo tipo;
     String id;
-		int col;
+		ParserRuleContext contexto;
 
     if (ctx.tipo() != null) {
       id = ctx.id().ID().getText();
-			col = ctx.id().getStart().getCharPositionInLine();
+			contexto = ctx.id();
       if (ctx.tipo().t_booleano() != null) {
         tipo = booleano; // TLangAnalisadorSemantico.Tipo.BOOLEANO
       } else if (ctx.tipo().t_numero() != null) {
@@ -163,23 +146,23 @@ public class TLangTradutor extends TLangBaseListener {
       }
     } else if (ctx.atr_bool() != null) {
       id = ctx.atr_bool().id(0).ID().getText();
-			col = ctx.atr_bool().id(0).getStart().getCharPositionInLine();
+			contexto = ctx.atr_bool().id(0);
       tipo = booleano;
     } else if (ctx.atr_num() != null) {
       id = ctx.atr_num().id(0).ID().getText();
-			col = ctx.atr_num().id(0).getStart().getCharPositionInLine();
+			contexto = ctx.atr_num().id(0);
       tipo = numero;
     } else {
       id = ctx.atr_txt().id(0).ID().getText();
-			col = ctx.atr_txt().id(0).getStart().getCharPositionInLine();
+			contexto = ctx.atr_txt().id(0);
       tipo = texto;
     }
 
 		if (analisadorSemantico.declarado(id)) {
-			analisadorSemantico.erroJaDeclarado(id, this.numeroLinha, col, this.textoLinha);
+			analisadorSemantico.erroJaDeclarado(id, contexto);
 		} else {
 			analisadorSemantico.declarar(id, tipo);
-			linha("// declaracao -> simb: " + id + ", tipo: " + tipo.name().toLowerCase());
+			imprimirDeclaracao(id, tipo);
 			identar();
 		}
 	}
@@ -190,7 +173,7 @@ public class TLangTradutor extends TLangBaseListener {
 
 	@Override public void enterAtr(TLangParser.AtrContext ctx) {
 		identar();
-		atualizarPosicao(ctx);
+		analisadorSemantico.atualizarContexto(ctx);
 	}
 
 	@Override public void exitAtr(TLangParser.AtrContext ctx) { 
@@ -201,14 +184,14 @@ public class TLangTradutor extends TLangBaseListener {
 
 		for (int i = 0; i < ctx.id().size(); i++) {
 			String id = ctx.id(i).getText();
-			int col = ctx.id(i).getStart().getCharPositionInLine();
+			ParserRuleContext contexto = ctx.id(i);
 			TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
 			if (tipo != null) {
 				if (tipo != numero) {
-					analisadorSemantico.erroTipo(id, this.numeroLinha, col, this.textoLinha, numero);
+					analisadorSemantico.erroTipo(id, contexto, numero);
 				}
 			} else {
-				analisadorSemantico.erroNaoDeclarado(id, this.numeroLinha, col, this.textoLinha);
+				analisadorSemantico.erroNaoDeclarado(id, contexto);
 			}
 		}
 	}
@@ -216,14 +199,14 @@ public class TLangTradutor extends TLangBaseListener {
 	@Override public void exitAtr_txt(TLangParser.Atr_txtContext ctx) { 
 		for (int i = 0; i < ctx.id().size(); i++) {
 			String id = ctx.id(i).getText();
-			int col = ctx.id(i).getStart().getCharPositionInLine();
+			ParserRuleContext contexto = ctx.id(i);
 			TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
 			if (tipo != null) {
 				if (tipo != texto) {
-					analisadorSemantico.erroTipo(id, this.numeroLinha, col, this.textoLinha, texto);
+					analisadorSemantico.erroTipo(id, contexto, texto);
 				}
 			} else {
-				analisadorSemantico.erroNaoDeclarado(id, this.numeroLinha, col, this.textoLinha);
+				analisadorSemantico.erroNaoDeclarado(id, contexto);
 			}
 		}
 	}
@@ -231,14 +214,14 @@ public class TLangTradutor extends TLangBaseListener {
 	@Override public void exitAtr_bool(TLangParser.Atr_boolContext ctx) { 
 		for (int i = 0; i < ctx.id().size(); i++) {
 			String id = ctx.id(i).getText();
-			int col = ctx.id(i).getStart().getCharPositionInLine();
+			ParserRuleContext contexto = ctx.id(i);
 			TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
 			if (tipo != null) {
 				if (tipo != booleano) {
-					analisadorSemantico.erroTipo(id, this.numeroLinha, col, this.textoLinha, booleano);
+					analisadorSemantico.erroTipo(id, contexto, booleano);
 				}
 			} else {
-				analisadorSemantico.erroNaoDeclarado(id, this.numeroLinha, col, this.textoLinha);
+				analisadorSemantico.erroNaoDeclarado(id, contexto);
 			}
 		}
 	}
@@ -246,14 +229,14 @@ public class TLangTradutor extends TLangBaseListener {
 	@Override public void exitTermo_bool(TLangParser.Termo_boolContext ctx) {
 		if (ctx.id() != null) {
 			String id = ctx.id().ID().getText();
-			int col = ctx.id().getStart().getCharPositionInLine();
+			ParserRuleContext contexto = ctx.id();
 			TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
 			if (tipo != null) {
 				if (tipo != booleano) {
-					analisadorSemantico.erroTipo(id, this.numeroLinha, col, this.textoLinha, booleano);
+					analisadorSemantico.erroTipo(id, contexto, booleano);
 				}
 			} else {
-				analisadorSemantico.erroNaoDeclarado(id, this.numeroLinha, col, this.textoLinha);
+				analisadorSemantico.erroNaoDeclarado(id, contexto);
 			}
 		}
 	}
@@ -262,14 +245,14 @@ public class TLangTradutor extends TLangBaseListener {
 	@Override public void exitTermo_rel(TLangParser.Termo_relContext ctx) {
 		if (ctx.id() != null) {
 			String id = ctx.id().ID().getText();
-			int col = ctx.id().getStart().getCharPositionInLine();
+			ParserRuleContext contexto = ctx.id();
 			TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
 			if (tipo != null) {
 				if (tipo != numero) {
-					analisadorSemantico.erroTipo(id, this.numeroLinha, col, this.textoLinha, numero);
+					analisadorSemantico.erroTipo(id, contexto, numero);
 				}
 			} else {
-				analisadorSemantico.erroNaoDeclarado(id, this.numeroLinha, col, this.textoLinha);
+				analisadorSemantico.erroNaoDeclarado(id, contexto);
 			}
 		}
 	}
@@ -277,14 +260,14 @@ public class TLangTradutor extends TLangBaseListener {
 	@Override public void exitTermo_ig(TLangParser.Termo_igContext ctx) { 
 		if (ctx.id() != null) {
 			String id = ctx.id().ID().getText();
-			int col = ctx.id().getStart().getCharPositionInLine();
+			ParserRuleContext contexto = ctx.id();
 			TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
 			if (tipo != null) {
 				if (tipo != numero) {
-					analisadorSemantico.erroTipo(id, this.numeroLinha, col, this.textoLinha, numero);
+					analisadorSemantico.erroTipo(id, contexto, numero);
 				}
 			} else {
-				analisadorSemantico.erroNaoDeclarado(id, this.numeroLinha, col, this.textoLinha);
+				analisadorSemantico.erroNaoDeclarado(id, contexto);
 			}
 		}
 	}
@@ -292,14 +275,14 @@ public class TLangTradutor extends TLangBaseListener {
 	@Override public void exitTermo(TLangParser.TermoContext ctx) { 
 		if (ctx.id() != null) {
 			String id = ctx.id().ID().getText();
-			int col = ctx.id().getStart().getCharPositionInLine();
+			ParserRuleContext contexto = ctx.id();
 			TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
 			if (tipo != null) {
 				if (tipo != numero) {
-					analisadorSemantico.erroTipo(id, this.numeroLinha, col, this.textoLinha, numero);
+					analisadorSemantico.erroTipo(id, contexto, numero);
 				}
 			} else {
-				analisadorSemantico.erroNaoDeclarado(id, this.numeroLinha, col, this.textoLinha);
+				analisadorSemantico.erroNaoDeclarado(id, contexto);
 			}
 		}
 	}
@@ -307,14 +290,14 @@ public class TLangTradutor extends TLangBaseListener {
 	@Override public void exitExpr_txt(TLangParser.Expr_txtContext ctx) { 
 		if (ctx.id() != null) {
 			String id = ctx.id().ID().getText();
-			int col = ctx.id().getStart().getCharPositionInLine();
+			ParserRuleContext contexto = ctx.id();
 			TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
 			if (tipo != null) {
 				if (tipo != texto) {
-					analisadorSemantico.erroTipo(id, this.numeroLinha, col, this.textoLinha, texto);
+					analisadorSemantico.erroTipo(id, contexto, texto);
 				}
 			} else {
-				analisadorSemantico.erroNaoDeclarado(id, this.numeroLinha, col, this.textoLinha);
+				analisadorSemantico.erroNaoDeclarado(id, contexto);
 			}
 		}
 	}
@@ -326,7 +309,7 @@ public class TLangTradutor extends TLangBaseListener {
 	@Override public void enterEscrita(TLangParser.EscritaContext ctx) { 
 		linha("");
 		identar();
-		atualizarPosicao(ctx);
+		analisadorSemantico.atualizarContexto(ctx);
 	}
 
 	@Override public void exitEscrita(TLangParser.EscritaContext ctx) { 
@@ -339,11 +322,11 @@ public class TLangTradutor extends TLangBaseListener {
 	}
 
 	@Override public void enterControle_cond(TLangParser.Controle_condContext ctx) { 
-		atualizarPosicao(ctx);
+		analisadorSemantico.atualizarContexto(ctx);
 	}
 
 	@Override public void enterControle_cond_sec(TLangParser.Controle_cond_secContext ctx) { 
-		atualizarPosicao(ctx);
+		analisadorSemantico.atualizarContexto(ctx);
 	}
 
 	@Override public void enterEstr_repet(TLangParser.Estr_repetContext ctx) { 
@@ -352,19 +335,19 @@ public class TLangTradutor extends TLangBaseListener {
 	}
 
 	@Override public void enterControle_enquanto(TLangParser.Controle_enquantoContext ctx) { 
-		atualizarPosicao(ctx);
+		analisadorSemantico.atualizarContexto(ctx);
 	}
 
 	@Override public void enterControle_de_ate(TLangParser.Controle_de_ateContext ctx) { 
-		atualizarPosicao(ctx);
+		analisadorSemantico.atualizarContexto(ctx);
 	}
 
 	@Override public void exitControle_de_ate(TLangParser.Controle_de_ateContext ctx) {
 		if (ctx.contr_id() != null && ctx.contr_num(0) != null && ctx.contr_num(1) != null) {
 			String id = ctx.contr_id().ID().getText();
-			int col = ctx.contr_id().getStart().getCharPositionInLine();
+			ParserRuleContext contexto = ctx.contr_id();
 			if (analisadorSemantico.declarado(id)) {
-				analisadorSemantico.erroJaDeclarado(id, this.numeroLinha, col, this.textoLinha);
+				analisadorSemantico.erroJaDeclarado(id, contexto);
 			}
 			int de = Integer.parseInt(ctx.contr_num(0).NUM().getText());
 			int ate = Integer.parseInt(ctx.contr_num(1).NUM().getText());

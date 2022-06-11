@@ -2,10 +2,16 @@ import java.util.HashMap;
 import java.util.Stack;
 import java.util.Map.Entry;
 
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.misc.Interval;
+
 public class TLangAnalisadorSemantico {
   static enum Tipo { NUMERO, TEXTO, BOOLEANO }
 
-	private String nomeDaClasse;
+	private String nomeDaClasse = "";
+	private int numeroLinha = 0;
+	private int colInicio = 0;
+	private String textoLinha = ""; 
 
 	TLangAnalisadorSemantico(String nomeDaClasse) {
 		super();
@@ -28,6 +34,14 @@ public class TLangAnalisadorSemantico {
 
 	private String obterChave(String id) {
 		return id + '@' + this.escopo.peek().toString();
+	}
+
+	// https://stackoverflow.com/questions/26524302/how-to-preserve-whitespace-when-we-use-text-attribute-in-antlr4
+	private String obterTextoIntegral(ParserRuleContext ctx) {
+    if (ctx.start == null || ctx.stop == null || ctx.start.getStartIndex() < 0 || ctx.stop.getStopIndex() < 0)
+        return ctx.getText();
+
+    return ctx.start.getInputStream().getText(Interval.of(ctx.start.getStartIndex(), ctx.stop.getStopIndex()));
 	}
 
 	// Métodos públicos
@@ -86,28 +100,35 @@ public class TLangAnalisadorSemantico {
 		return output;
 	}
 
-	private void imprimirErro(String mensagem, int linha, int col, String codigo) {
-		System.err.println(this.nomeDaClasse + ".tlang:" + linha + ": erro: " + mensagem);
-		System.err.println("\t" + codigo);
+	public void atualizarContexto(ParserRuleContext ctx) {
+		this.numeroLinha = ctx.getStart().getLine();
+		this.colInicio = ctx.getStart().getCharPositionInLine();
+		this.textoLinha = this.obterTextoIntegral(ctx).split("\\r\\n|\\n")[0];
+	}
+
+	private void imprimirErro(String mensagem, ParserRuleContext contextoId) {
+		int col = contextoId.getStart().getCharPositionInLine() - this.colInicio;
+		System.err.println(this.nomeDaClasse + ".tlang:" + this.numeroLinha + ": erro: " + mensagem);
+		System.err.println("\t" + this.textoLinha);
 		System.err.println("\t" + " ".repeat(col) + "^");
 		System.err.println("");
 
 		this.contadorErros++;
 	}
 
-	public void erroNaoDeclarado(String id, int linha, int col, String codigo) {
+	public void erroNaoDeclarado(String id, ParserRuleContext contextoId) {
 		String mensagem = "variável " + id + " não declarada";
-		imprimirErro(mensagem, linha, col, codigo);
+		imprimirErro(mensagem, contextoId);
 	}
 
-	public void erroJaDeclarado(String id, int linha, int col, String codigo) {
+	public void erroJaDeclarado(String id, ParserRuleContext contextoId) {
 		String mensagem = "variável " + id + " já declarada";
-		imprimirErro(mensagem, linha, col, codigo);
+		imprimirErro(mensagem, contextoId);
 	}
 
-	public void erroTipo(String id, int linha, int col, String codigo, Tipo esperado) {
-		String mensagem = "a variável " + id + " não é do tipo" + esperado.name().toLowerCase();
-		imprimirErro(mensagem, linha, col, codigo);
+	public void erroTipo(String id, ParserRuleContext contextoId, Tipo esperado) {
+		String mensagem = "a variável " + id + " não é do tipo " + esperado.name().toLowerCase();
+		imprimirErro(mensagem, contextoId);
 	}
 
 	public void imprimirTotalErros() {
