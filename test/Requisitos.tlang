@@ -29,7 +29,7 @@ de (x = 0 ate n) {
 numero expr = 1 * 2 / 6 + 3 - 45 + (1 + 4)
 
 // Verificacao de tipos
-texto novo = "Ola " + n
+texto novo = "Ola " & n
 numero f = novo - n
 
 // Variavel nao declarada

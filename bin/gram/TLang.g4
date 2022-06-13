@@ -18,7 +18,7 @@ grammar TLang;
 
 iniciar: bloco;
 
-bloco: (decl | atr | leitura | escrita | estr_cond | estr_repet)+;
+bloco: (decl | atr_simples | escrita | estr_cond | estr_repet)+;
 
 // Operadores
 
@@ -36,6 +36,8 @@ op_atr_txt
   : op_atr 
   | SOMA_ATR 
   ;
+
+op_concat: CONCAT;
 
 op_bool
   : E 
@@ -75,37 +77,25 @@ op_div_atr: DIV_ATR;
 // Atribuição
 
 atr
-  : atr_num
-  | atr_txt
-  | atr_bool
-  ; 
-
-atr_num
-  : id op_atr_num (expr_aritm|leitura_num) 
+  : id op_atr (id|val|expr|leitura)
   | id op_inc // x++
   | op_inc id // ++x
   | id op_dec // x--
   | op_dec id // --x
   ;
 
-atr_txt: id op_atr_txt (expr_txt|leitura_txt);
-atr_bool: id op_atr (expr_bool|leitura_bool);
+atr_simples: atr;
 
 // Declaração
 
-decl
-  : tipo id               // numero x
-  | t_numero atr_num      // numero x = 2
-  | t_texto atr_txt       
-  | t_booleano atr_bool
-  ;
+decl: tipo (id|atr);
 
 // Comandos
 
 leitura
   : leitura_num
   | leitura_txt
-  | leia_bool
+  | leitura_bool
   ;
 
 leitura_num: leia_num paren_e paren_d;
@@ -116,9 +106,9 @@ escrita: escreva paren_e (id|expr) paren_d;
 // Expressões
 
 expr
-	: expr_bool
+	: expr_txt
+	| expr_bool
   | expr_aritm 
-	| expr_txt
 	;
 
 expr_bool: termo_bool (op_e termo_bool | op_ou termo_bool | op_igual termo_bool | op_dif termo_bool)*;
@@ -156,7 +146,7 @@ termo
   | paren_e expr_aritm paren_d
   ;
 
-expr_txt: termo_txt (op_soma termo_txt)*;
+expr_txt: termo_txt (op_concat termo_txt)*;
 termo_txt
   : txt
   | id 
@@ -227,6 +217,7 @@ CHAVE_D: '}';
 
 // Operadores
 ATR: '=';
+CONCAT: '&';
 MAIORQ: '>';
 MENORQ: '<';
 MAIORIG: '>=';

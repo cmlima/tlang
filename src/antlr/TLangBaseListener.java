@@ -76,6 +76,18 @@ public class TLangBaseListener implements TLangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterOp_concat(TLangParser.Op_concatContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOp_concat(TLangParser.Op_concatContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterOp_bool(TLangParser.Op_boolContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -340,37 +352,13 @@ public class TLangBaseListener implements TLangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAtr_num(TLangParser.Atr_numContext ctx) { }
+	@Override public void enterAtr_simples(TLangParser.Atr_simplesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAtr_num(TLangParser.Atr_numContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAtr_txt(TLangParser.Atr_txtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAtr_txt(TLangParser.Atr_txtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAtr_bool(TLangParser.Atr_boolContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAtr_bool(TLangParser.Atr_boolContext ctx) { }
+	@Override public void exitAtr_simples(TLangParser.Atr_simplesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

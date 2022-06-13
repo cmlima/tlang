@@ -12,10 +12,9 @@ public class TLangTradutor extends TLangBaseListener {
 	private TLangAnalisadorSemantico.Tipo booleano = TLangAnalisadorSemantico.Tipo.BOOLEANO;
 	private TLangAnalisadorSemantico.Tipo texto = TLangAnalisadorSemantico.Tipo.TEXTO;
 
-	TLangTradutor(String nomeDaClasse, boolean depurar) {
+	TLangTradutor(String nomeDaClasse) {
 		super();
 		this.nomeDaClasse = nomeDaClasse;
-		this.depurar = depurar;
 		this.analisadorSemantico = new TLangAnalisadorSemantico(nomeDaClasse);
 	}
 
@@ -30,6 +29,7 @@ public class TLangTradutor extends TLangBaseListener {
 	private void imprimirDeclaracao(String id, TLangAnalisadorSemantico.Tipo tipo) {
 		if (!depurar) return;
 		linha("// declaracao -> simb: " + id + ", tipo: " + tipo.name().toLowerCase());
+		identar();
 	}
 
 	private void imprimirIds() {
@@ -124,9 +124,11 @@ public class TLangTradutor extends TLangBaseListener {
   @Override public void exitBloco(TLangParser.BlocoContext ctx) {
 		imprimirIds();
 		analisadorSemantico.deixarEscopo();
+		linha("");
   }
 
   @Override public void enterDecl(TLangParser.DeclContext ctx) {
+		linha("");
 		identar();
 		analisadorSemantico.atualizarContexto(ctx);
 
@@ -134,28 +136,20 @@ public class TLangTradutor extends TLangBaseListener {
     String id;
 		ParserRuleContext contexto;
 
-    if (ctx.tipo() != null) {
+		if (ctx.tipo().t_booleano() != null) {
+			tipo = booleano; // TLangAnalisadorSemantico.Tipo.BOOLEANO
+		} else if (ctx.tipo().t_numero() != null) {
+			tipo = numero; // TLangAnalisadorSemantico.Tipo.NUMERO
+		} else {
+			tipo = texto; // TLangAnalisadorSemantico.Tipo.TEXTO
+		}
+
+    if (ctx.id() != null) {
       id = ctx.id().ID().getText();
 			contexto = ctx.id();
-      if (ctx.tipo().t_booleano() != null) {
-        tipo = booleano; // TLangAnalisadorSemantico.Tipo.BOOLEANO
-      } else if (ctx.tipo().t_numero() != null) {
-        tipo = numero; // TLangAnalisadorSemantico.Tipo.NUMERO
-      } else {
-        tipo = texto; // TLangAnalisadorSemantico.Tipo.TEXTO
-      }
-    } else if (ctx.atr_bool() != null) {
-      id = ctx.atr_bool().id().ID().getText();
-			contexto = ctx.atr_bool().id();
-      tipo = booleano;
-    } else if (ctx.atr_num() != null) {
-      id = ctx.atr_num().id().ID().getText();
-			contexto = ctx.atr_num().id();
-      tipo = numero;
     } else {
-      id = ctx.atr_txt().id().ID().getText();
-			contexto = ctx.atr_txt().id();
-      tipo = texto;
+      id = ctx.atr().id(0).ID().getText();
+			contexto = ctx.atr().id(0);
     }
 
 		if (analisadorSemantico.declarado(id)) {
@@ -163,60 +157,81 @@ public class TLangTradutor extends TLangBaseListener {
 		} else {
 			analisadorSemantico.declarar(id, tipo);
 			imprimirDeclaracao(id, tipo);
-			identar();
 		}
 	}
 
   @Override public void exitDecl(TLangParser.DeclContext ctx) {
-		linha(";");
+		trecho(";");
   }
 
 	@Override public void enterAtr(TLangParser.AtrContext ctx) {
+    String id = ctx.id(0).ID().getText();
+		ParserRuleContext contexto = ctx.id(0);
+    TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
+
+		if (tipo != null) {
+			if (ctx.id(1) != null) {
+				String rhs = ctx.id(1).ID().getText();
+				ParserRuleContext subcontexto = ctx.id(1);
+				TLangAnalisadorSemantico.Tipo tipoRhs = analisadorSemantico.obterTipo(rhs);
+				if (tipoRhs != null) {
+					if (tipoRhs != tipo) {
+						analisadorSemantico.erroTipo(rhs, subcontexto, tipo);
+					}
+				} else {
+					analisadorSemantico.erroNaoDeclarado(id, subcontexto);
+				}
+			} else if (ctx.val() != null) {
+				if (ctx.val().num() != null) {
+					String val = ctx.val().num().getText();
+					ParserRuleContext subcontexto = ctx.val().num();
+					if (tipo != numero) {
+						analisadorSemantico.erroValor(val, subcontexto, tipo);
+					}
+				}
+				if (ctx.val().bool() != null) {
+					String val = ctx.val().bool().getText();
+					ParserRuleContext subcontexto = ctx.val().bool();
+					if (tipo != booleano) {
+						analisadorSemantico.erroValor(val, subcontexto, tipo);
+					}
+				}
+				if (ctx.val().txt() != null) {
+					String val = ctx.val().txt().getText();
+					ParserRuleContext subcontexto = ctx.val().txt();
+					if (tipo != texto) {
+						analisadorSemantico.erroValor(val, subcontexto, tipo);
+					}
+				}
+			} else if (ctx.expr() != null) {
+				if ((ctx.expr().expr_aritm() != null && tipo != numero)
+				|| (ctx.expr().expr_bool() != null && tipo != booleano)
+				|| (ctx.expr().expr_txt() != null && tipo != texto)) {
+					analisadorSemantico.erroExpressao(id, contexto, tipo);
+				}
+			} else if (ctx.leitura() != null) {
+				if ((ctx.leitura().leitura_num() != null && tipo != numero)
+				|| (ctx.leitura().leitura_bool() != null && tipo != booleano)
+				|| (ctx.leitura().leitura_txt() != null && tipo != texto)) {
+					analisadorSemantico.erroExpressao(id, contexto, tipo);
+				}
+			} else if (ctx.op_inc() != null || ctx.op_dec() != null && tipo != numero) {
+				analisadorSemantico.erroExpressao(id, contexto, tipo);
+			}
+
+		} else {
+			analisadorSemantico.erroNaoDeclarado(id, contexto);
+		}
+	}
+
+	@Override public void enterAtr_simples(TLangParser.Atr_simplesContext ctx) { 
+		linha("");
 		identar();
 		analisadorSemantico.atualizarContexto(ctx);
 	}
 
-	@Override public void exitAtr(TLangParser.AtrContext ctx) { 
-		linha(";");
-	}
-
-	@Override public void exitAtr_num(TLangParser.Atr_numContext ctx) {
-		String id = ctx.id().getText();
-		ParserRuleContext contexto = ctx.id();
-		TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
-		if (tipo != null) {
-			if (tipo != numero) {
-				analisadorSemantico.erroTipo(id, contexto, numero);
-			}
-		} else {
-			analisadorSemantico.erroNaoDeclarado(id, contexto);
-		}
-	}
-
-	@Override public void exitAtr_txt(TLangParser.Atr_txtContext ctx) { 
-		String id = ctx.id().getText();
-		ParserRuleContext contexto = ctx.id();
-		TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
-		if (tipo != null) {
-			if (tipo != texto) {
-				analisadorSemantico.erroTipo(id, contexto, texto);
-			}
-		} else {
-			analisadorSemantico.erroNaoDeclarado(id, contexto);
-		}
-	}
-
-	@Override public void exitAtr_bool(TLangParser.Atr_boolContext ctx) { 
-		String id = ctx.id().getText();
-		ParserRuleContext contexto = ctx.id();
-		TLangAnalisadorSemantico.Tipo tipo = analisadorSemantico.obterTipo(id);
-		if (tipo != null) {
-			if (tipo != booleano) {
-				analisadorSemantico.erroTipo(id, contexto, booleano);
-			}
-		} else {
-			analisadorSemantico.erroNaoDeclarado(id, contexto);
-		}
+	@Override public void exitAtr_simples(TLangParser.Atr_simplesContext ctx) { 
+		trecho(";");
 	}
 
 	@Override public void exitTermo_bool(TLangParser.Termo_boolContext ctx) {
@@ -233,7 +248,6 @@ public class TLangTradutor extends TLangBaseListener {
 			}
 		}
 	}
-
 
 	@Override public void exitTermo_rel(TLangParser.Termo_relContext ctx) {
 		if (ctx.id() != null) {
@@ -295,10 +309,6 @@ public class TLangTradutor extends TLangBaseListener {
 		}
 	}
 
-	@Override public void exitLeitura(TLangParser.LeituraContext ctx) { 
-		linha(";");
-	}
-
 	@Override public void enterEscrita(TLangParser.EscritaContext ctx) { 
 		linha("");
 		identar();
@@ -306,7 +316,7 @@ public class TLangTradutor extends TLangBaseListener {
 	}
 
 	@Override public void exitEscrita(TLangParser.EscritaContext ctx) { 
-		linha(";");
+		trecho(";");
 	}
 
 	@Override public void enterEstr_cond(TLangParser.Estr_condContext ctx) { 
@@ -370,6 +380,10 @@ public class TLangTradutor extends TLangBaseListener {
 
 	@Override public void exitOp_atr(TLangParser.Op_atrContext ctx) { 
 		if (ctx.ATR() != null) trecho(" " + ctx.ATR().getText() + " ");
+	}
+
+	@Override public void exitOp_concat(TLangParser.Op_concatContext ctx) { 
+		if (ctx.CONCAT() != null) trecho(" + ");
 	}
 	
 	@Override public void exitOp_maiorq(TLangParser.Op_maiorqContext ctx) { 
@@ -532,11 +546,10 @@ public class TLangTradutor extends TLangBaseListener {
 	}
 	
 	@Override public void exitChave_e(TLangParser.Chave_eContext ctx) { 
-		linha(" {");
+		trecho(" {");
 	}
 	
 	@Override public void exitChave_d(TLangParser.Chave_dContext ctx) { 
-		linha("");
 		identar();
 		trecho("}");
 	}

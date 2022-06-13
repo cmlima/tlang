@@ -9,7 +9,7 @@ numero x
 x = 5.45
 numero minhaVariavel = 1 - 34 * 2 + 2 / 3
 numero minhaNovaVariavel = x
-texto meuTexto = "Ola, eu sou uma longa cadeia de caracteres\n com mais de uma linha" + "mais um trecho" + "outro trecho"
+texto meuTexto = "Ola, eu sou uma longa cadeia de caracteres\n com mais de uma linha" & "mais um trecho" & "outro trecho"
 booleano ok = verdadeiro
 
 se (x == 3) {
@@ -35,7 +35,7 @@ se (x == 3) {
 } senao {
   minhaVariavel = 10
   minhaNovaVariavel = 20
-  texto meuNovoTexto = "isto eh um novo texto" + "novo escopo"
+  texto meuNovoTexto = "isto eh um novo texto" & "novo escopo"
   booleano meuValorBooleano = falso
   numero istoEhUmNumero = 34.78 + (34 * 2 / 5)
 }

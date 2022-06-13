@@ -58,6 +58,16 @@ public interface TLangListener extends ParseTreeListener {
 	 */
 	void exitOp_atr_txt(TLangParser.Op_atr_txtContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link TLangParser#op_concat}.
+	 * @param ctx the parse tree
+	 */
+	void enterOp_concat(TLangParser.Op_concatContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLangParser#op_concat}.
+	 * @param ctx the parse tree
+	 */
+	void exitOp_concat(TLangParser.Op_concatContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link TLangParser#op_bool}.
 	 * @param ctx the parse tree
 	 */
@@ -278,35 +288,15 @@ public interface TLangListener extends ParseTreeListener {
 	 */
 	void exitAtr(TLangParser.AtrContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLangParser#atr_num}.
+	 * Enter a parse tree produced by {@link TLangParser#atr_simples}.
 	 * @param ctx the parse tree
 	 */
-	void enterAtr_num(TLangParser.Atr_numContext ctx);
+	void enterAtr_simples(TLangParser.Atr_simplesContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TLangParser#atr_num}.
+	 * Exit a parse tree produced by {@link TLangParser#atr_simples}.
 	 * @param ctx the parse tree
 	 */
-	void exitAtr_num(TLangParser.Atr_numContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link TLangParser#atr_txt}.
-	 * @param ctx the parse tree
-	 */
-	void enterAtr_txt(TLangParser.Atr_txtContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TLangParser#atr_txt}.
-	 * @param ctx the parse tree
-	 */
-	void exitAtr_txt(TLangParser.Atr_txtContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link TLangParser#atr_bool}.
-	 * @param ctx the parse tree
-	 */
-	void enterAtr_bool(TLangParser.Atr_boolContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TLangParser#atr_bool}.
-	 * @param ctx the parse tree
-	 */
-	void exitAtr_bool(TLangParser.Atr_boolContext ctx);
+	void exitAtr_simples(TLangParser.Atr_simplesContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TLangParser#decl}.
 	 * @param ctx the parse tree

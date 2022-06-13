@@ -131,6 +131,16 @@ public class TLangAnalisadorSemantico {
 		imprimirErro(mensagem, contextoId);
 	}
 
+	public void erroValor(String val, ParserRuleContext contextoVal, Tipo esperado) {
+		String mensagem = "o valor " + val + " não é do tipo " + esperado.name().toLowerCase();
+		imprimirErro(mensagem, contextoVal);
+	}
+
+	public void erroExpressao(String id, ParserRuleContext contextoId, Tipo esperado) {
+		String mensagem = "a expressao atribuída à variável " + id + " não é do tipo " + esperado.name().toLowerCase();
+		imprimirErro(mensagem, contextoId);
+	}
+
 	public void imprimirTotalErros() {
 		System.err.println(contadorErros + " erros");
 	}
