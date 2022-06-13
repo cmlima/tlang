@@ -179,7 +179,7 @@ public class TLangTradutor extends TLangBaseListener {
 						analisadorSemantico.erroTipo(rhs, subcontexto, tipo);
 					}
 				} else {
-					analisadorSemantico.erroNaoDeclarado(id, subcontexto);
+					analisadorSemantico.erroNaoDeclarado(rhs, subcontexto);
 				}
 			} else if (ctx.val() != null) {
 				if (ctx.val().num() != null) {
