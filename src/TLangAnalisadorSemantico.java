@@ -117,27 +117,27 @@ public class TLangAnalisadorSemantico {
 	}
 
 	public void erroNaoDeclarado(String id, ParserRuleContext contextoId) {
-		String mensagem = "variável " + id + " não declarada";
+		String mensagem = "variavel " + id + " nao declarada";
 		imprimirErro(mensagem, contextoId);
 	}
 
 	public void erroJaDeclarado(String id, ParserRuleContext contextoId) {
-		String mensagem = "variável " + id + " já declarada";
+		String mensagem = "variavel " + id + " ja declarada";
 		imprimirErro(mensagem, contextoId);
 	}
 
 	public void erroTipo(String id, ParserRuleContext contextoId, Tipo esperado) {
-		String mensagem = "a variável " + id + " não é do tipo " + esperado.name().toLowerCase();
+		String mensagem = "a variavel " + id + " nao eh do tipo " + esperado.name().toLowerCase();
 		imprimirErro(mensagem, contextoId);
 	}
 
 	public void erroValor(String val, ParserRuleContext contextoVal, Tipo esperado) {
-		String mensagem = "o valor " + val + " não é do tipo " + esperado.name().toLowerCase();
+		String mensagem = "o valor " + val + " nao eh do tipo " + esperado.name().toLowerCase();
 		imprimirErro(mensagem, contextoVal);
 	}
 
 	public void erroExpressao(String id, ParserRuleContext contextoId, Tipo esperado) {
-		String mensagem = "a expressao atribuída à variável " + id + " não é do tipo " + esperado.name().toLowerCase();
+		String mensagem = "a expressao atribuída aa variavel " + id + " nao eh do tipo " + esperado.name().toLowerCase();
 		imprimirErro(mensagem, contextoId);
 	}
 

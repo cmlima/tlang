@@ -2,5 +2,5 @@
 :: o path do java (na faculdade) 
 cls
 SET PATH=.;%ProgramFiles%\Java\jdk-13.0.1\bin;%PATH%
-SET CLASSPATH=.;..\lib\antlr-4.10.1-complete.jar;%CLASSPATH%
+SET CLASSPATH=.;%cd%\lib\antlr-4.10.1-complete.jar;%CLASSPATH%
 java org.antlr.v4.Tool
