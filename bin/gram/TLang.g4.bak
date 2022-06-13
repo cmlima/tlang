@@ -108,7 +108,7 @@ escrita: escreva paren_e (id|expr) paren_d;
 expr
 	: expr_txt
 	| expr_bool
-	| expr_aritm 
+  | expr_aritm 
 	;
 
 expr_bool: termo_bool (op_e termo_bool | op_ou termo_bool | op_igual termo_bool | op_dif termo_bool)*;

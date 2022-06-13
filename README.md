@@ -39,13 +39,6 @@ A partir dessa pasta, você pode executar os comandos:
 | `compilar-tudo` | nenhum | O mesmo que `compilar`, porém para todos os arquivos `.tlang` na pasta `test`. |
 | `testar` | [nome do arquivo sem extensão] | Faz o mesmo que `compilar`, mas também compila o arquivo `.java` usando o comando `javac` e executa o arquivo na `JVM`. |
 
-- `iniciar` para iniciar o antlr4 no projeto atual
-- `iniciar-uam` para iniciar o antlr4 no projeto atual quando no ambiente da UAM
-- `gerar` para que o antlr4 gere o Lexer e Parser a partir da gramática na pasta `src/atlr`
-- `arvore` para visualizar a árvore de derivação (o arquivo `.lang` precisa estar na pasta `test` e você deve indicá-lo digitando `arvore [nome-arquivo-sem-extensão]`)
-- `compilar` para traduzir todos os arquivos `.tlang` na pasta `test` para a linguagem Java
-- `testar` para compilar e executar um dos arquivos `java` na pasta `test` (você precisar indicar o arquivo digitando `testar [nome-arquivo-sem-extensão]`)
-
 A sequência típica de comandos é a seguinte:
 
 1) Execute `ìniciar` para tornar o Antlr4 disponível no ambiente.
