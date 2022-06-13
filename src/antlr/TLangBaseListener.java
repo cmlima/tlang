@@ -544,13 +544,49 @@ public class TLangBaseListener implements TLangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFator(TLangParser.FatorContext ctx) { }
+	@Override public void enterExpr_soma(TLangParser.Expr_somaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFator(TLangParser.FatorContext ctx) { }
+	@Override public void exitExpr_soma(TLangParser.Expr_somaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExpr_sub(TLangParser.Expr_subContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpr_sub(TLangParser.Expr_subContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExpr_mult(TLangParser.Expr_multContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpr_mult(TLangParser.Expr_multContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExpr_div(TLangParser.Expr_divContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpr_div(TLangParser.Expr_divContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -575,6 +611,18 @@ public class TLangBaseListener implements TLangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExpr_txt(TLangParser.Expr_txtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTermo_txt(TLangParser.Termo_txtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTermo_txt(TLangParser.Termo_txtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

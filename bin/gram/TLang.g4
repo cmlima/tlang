@@ -81,15 +81,15 @@ atr
   ; 
 
 atr_num
-  : id op_atr_num (id|num|expr_aritm|leitura_num) 
+  : id op_atr_num (expr_aritm|leitura_num) 
   | id op_inc // x++
   | op_inc id // ++x
   | id op_dec // x--
   | op_dec id // --x
   ;
 
-atr_txt: id op_atr_txt (id|expr_txt|leitura_txt);
-atr_bool: id op_atr (id|expr_bool|leitura_bool);
+atr_txt: id op_atr_txt (expr_txt|leitura_txt);
+atr_bool: id op_atr (expr_bool|leitura_bool);
 
 // Declaração
 
@@ -145,15 +145,22 @@ termo_ig
   | paren_e expr_ig paren_d
   ;
 
-expr_aritm: fator (op_soma fator | op_sub fator)*;
-fator: termo (op_mult termo | op_div termo)*;
+expr_aritm: expr_soma;
+expr_soma: expr_sub (op_soma expr_sub)*;
+expr_sub: expr_mult (op_sub expr_mult)*;
+expr_mult: expr_div (op_mult expr_div)*;
+expr_div: termo (op_div termo)*;
 termo
   : num 
   | id 
   | paren_e expr_aritm paren_d
   ;
 
-expr_txt: (txt|id) (op_soma txt)*;
+expr_txt: termo_txt (op_soma termo_txt)*;
+termo_txt
+  : txt
+  | id 
+  ;
 
 // Estrutura de controle
 

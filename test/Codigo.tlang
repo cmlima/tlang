@@ -46,17 +46,17 @@ enquanto (x < 5) {
   minhaNovaVariavel = -30.4
 }
 
-escreva("De 50 a -1")
+escreva("De 1 a 50")
 
 // estrutura de repetição
-de x = 50 ate -1 {
+de (x = 1 ate 50) {
   escreva(x)
   minhaNovaVariavel = 60.14567
 }
 
 escreva("De -10 a 100")
 
-de x = -10 ate 100 {
+de (x = -10 ate 100) {
   escreva(x)
   minhaNovaVariavel = 60.14567
 }

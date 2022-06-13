@@ -13,7 +13,7 @@ numero inicio = leiaNumero()
 escreva("Por favor, forneca um outro numero qualquer maior ou igual ao primeiro:")
 numero fim = leiaNumero()
 
-escreva("Você deseja imprimrir os numeros nesse intervalo?")
+escreva("Você deseja imprimrir os numeros nesse intervalo? (true/false)")
 booleano sim = leiaBooleano()
 
 escreva("Por favor, escreva uma frase como mensagem final:")

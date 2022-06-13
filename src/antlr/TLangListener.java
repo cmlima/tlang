@@ -448,15 +448,45 @@ public interface TLangListener extends ParseTreeListener {
 	 */
 	void exitExpr_aritm(TLangParser.Expr_aritmContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLangParser#fator}.
+	 * Enter a parse tree produced by {@link TLangParser#expr_soma}.
 	 * @param ctx the parse tree
 	 */
-	void enterFator(TLangParser.FatorContext ctx);
+	void enterExpr_soma(TLangParser.Expr_somaContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TLangParser#fator}.
+	 * Exit a parse tree produced by {@link TLangParser#expr_soma}.
 	 * @param ctx the parse tree
 	 */
-	void exitFator(TLangParser.FatorContext ctx);
+	void exitExpr_soma(TLangParser.Expr_somaContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLangParser#expr_sub}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpr_sub(TLangParser.Expr_subContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLangParser#expr_sub}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpr_sub(TLangParser.Expr_subContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLangParser#expr_mult}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpr_mult(TLangParser.Expr_multContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLangParser#expr_mult}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpr_mult(TLangParser.Expr_multContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLangParser#expr_div}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpr_div(TLangParser.Expr_divContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLangParser#expr_div}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpr_div(TLangParser.Expr_divContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TLangParser#termo}.
 	 * @param ctx the parse tree
@@ -477,6 +507,16 @@ public interface TLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExpr_txt(TLangParser.Expr_txtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TLangParser#termo_txt}.
+	 * @param ctx the parse tree
+	 */
+	void enterTermo_txt(TLangParser.Termo_txtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TLangParser#termo_txt}.
+	 * @param ctx the parse tree
+	 */
+	void exitTermo_txt(TLangParser.Termo_txtContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TLangParser#estr_cond}.
 	 * @param ctx the parse tree

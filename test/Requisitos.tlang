@@ -1,0 +1,40 @@
+// Três tipos de variáveis:
+numero n = 3
+booleano ok = verdadeiro
+texto t = "Olah mundo!"
+
+// Estrutura de controle
+
+se (n == 2) {
+  ok = falso
+} senaose (n == 1) {
+  n = 5
+} senao {
+  n = 6
+}
+
+// estruturas de repeticao
+// comandos de escrita e leitura
+
+enquanto (n == 6) {
+  escreva("Me deh um numero diferente de 6: ")
+  n = leiaNumero()
+}
+
+de (x = 0 ate n) {
+  escreva(x)
+}
+
+// Precedencia de operadores aritmeticos
+numero expr = 1 * 2 / 6 + 3 - 45 + (1 + 4)
+
+// Verificacao de tipos
+texto novo = "Ola " + n
+numero f = novo - n
+
+// Variavel nao declarada
+n = naoFuiDeclarada
+tambemNaoFui = n
+
+// Aceitando numeros decimais
+n = n + 1.6 - 190.323524 + 3.2
