@@ -1,0 +1,17 @@
+-------------------------------------------------------------------------------
+Universidade Anhembi Morumbi
+CCO - Paulista - 8º Semestre
+Compiladores - Professor Dr. Charles Ferreira
+-------------------------------------------------------------------------------
+
+Trabalho de Conclusão
+Linguagem TLang
+
+-------------------------------------------------------------------------------
+
+Álef Emmanuel Siqueira de Souza (aesiqueirasouza@gmail.com)     RA 125111368962
+Caio Moysés de Lima (caio.moyses.lima@gmail.com)                RA 125111358568
+Diego Yudi Kikuchi Yamazato (yudi.kikuchi@gmail.com)            RA 125111365827
+Giovanna Victória Furlan Anraku (gioanraku@gmail.com)           RA 125111343524
+Henrique Yonamine (henriquey08@gmail.com)                       RA 125111372444
+Luccas de Felice Donaire (felice.donaire@gmail.com)             RA 125111365576

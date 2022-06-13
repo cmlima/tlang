@@ -5,7 +5,7 @@
       "name": "Depurar gramática ANTLR4",
       "type": "antlr-debug",
       "request": "launch",
-      "input": "test/teste.tlang",
+      "input": "test/CodigoCorreto.tlang",
       "grammar": "src/gram/TLang.g4",
       "startRule": "iniciar",
       "printParseTree": true,

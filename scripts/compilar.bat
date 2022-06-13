@@ -5,5 +5,5 @@ DEL /F ..\test\*.java
 
 cd ..\src
 javac -cp .;..\lib\antlr-4.10.1-complete.jar *.java
-java FileReader
+java FileReader %*.tlang
 cd ../scripts

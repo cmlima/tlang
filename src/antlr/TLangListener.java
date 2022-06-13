@@ -578,35 +578,35 @@ public interface TLangListener extends ParseTreeListener {
 	 */
 	void exitControle_de_ate(TLangParser.Controle_de_ateContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLangParser#contr_id}.
+	 * Enter a parse tree produced by {@link TLangParser#ctr_id}.
 	 * @param ctx the parse tree
 	 */
-	void enterContr_id(TLangParser.Contr_idContext ctx);
+	void enterCtr_id(TLangParser.Ctr_idContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TLangParser#contr_id}.
+	 * Exit a parse tree produced by {@link TLangParser#ctr_id}.
 	 * @param ctx the parse tree
 	 */
-	void exitContr_id(TLangParser.Contr_idContext ctx);
+	void exitCtr_id(TLangParser.Ctr_idContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLangParser#contr_atr}.
+	 * Enter a parse tree produced by {@link TLangParser#ctr_inicial}.
 	 * @param ctx the parse tree
 	 */
-	void enterContr_atr(TLangParser.Contr_atrContext ctx);
+	void enterCtr_inicial(TLangParser.Ctr_inicialContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TLangParser#contr_atr}.
+	 * Exit a parse tree produced by {@link TLangParser#ctr_inicial}.
 	 * @param ctx the parse tree
 	 */
-	void exitContr_atr(TLangParser.Contr_atrContext ctx);
+	void exitCtr_inicial(TLangParser.Ctr_inicialContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link TLangParser#contr_num}.
+	 * Enter a parse tree produced by {@link TLangParser#ctr_final}.
 	 * @param ctx the parse tree
 	 */
-	void enterContr_num(TLangParser.Contr_numContext ctx);
+	void enterCtr_final(TLangParser.Ctr_finalContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link TLangParser#contr_num}.
+	 * Exit a parse tree produced by {@link TLangParser#ctr_final}.
 	 * @param ctx the parse tree
 	 */
-	void exitContr_num(TLangParser.Contr_numContext ctx);
+	void exitCtr_final(TLangParser.Ctr_finalContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TLangParser#val}.
 	 * @param ctx the parse tree

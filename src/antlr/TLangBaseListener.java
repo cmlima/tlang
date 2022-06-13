@@ -700,37 +700,37 @@ public class TLangBaseListener implements TLangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterContr_id(TLangParser.Contr_idContext ctx) { }
+	@Override public void enterCtr_id(TLangParser.Ctr_idContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitContr_id(TLangParser.Contr_idContext ctx) { }
+	@Override public void exitCtr_id(TLangParser.Ctr_idContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterContr_atr(TLangParser.Contr_atrContext ctx) { }
+	@Override public void enterCtr_inicial(TLangParser.Ctr_inicialContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitContr_atr(TLangParser.Contr_atrContext ctx) { }
+	@Override public void exitCtr_inicial(TLangParser.Ctr_inicialContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterContr_num(TLangParser.Contr_numContext ctx) { }
+	@Override public void enterCtr_final(TLangParser.Ctr_finalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitContr_num(TLangParser.Contr_numContext ctx) { }
+	@Override public void exitCtr_final(TLangParser.Ctr_finalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

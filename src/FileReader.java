@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -39,7 +40,7 @@ public class FileReader {
     public static void main(String[] args) throws IOException {
 
         final File dir = new File(DIRETORIO);
-        ArrayList<String> arquivos = obterArquivos(dir, "." + EXTENSAO);
+        ArrayList<String> arquivos = args.length == 0 ? obterArquivos(dir, "." + EXTENSAO) : new ArrayList<>(Arrays.asList(args));
 
         if (arquivos.size() == 0) {
             System.out.println("Nenhum arquivo localizado no diretório " + DIRETORIO);

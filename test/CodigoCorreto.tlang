@@ -1,0 +1,32 @@
+/*
+  Codigo funcional em TLang
+  Pede ao usuario um numero inicial e um final
+  Pergunta se deseja imprimir os números
+  E pede tambem uma frase
+*/
+
+escreva("Olah, este eh um programa escrito em TLang")
+
+escreva("Por favor, forneca um numero qualquer:")
+numero inicio = leiaNumero()
+
+escreva("Por favor, forneca um outro numero qualquer maior ou igual ao primeiro:")
+numero fim = leiaNumero()
+
+escreva("Você deseja imprimrir os numeros nesse intervalo?")
+booleano sim = leiaBooleano()
+
+escreva("Por favor, escreva uma frase como mensagem final:")
+texto mensagem = leiaTexto()
+
+se (sim) {
+  escreva("Como voce quis imprimir os números do intervalo, aih vao eles:")
+  de (i = inicio ate fim) {
+    escreva(i)
+  }
+} senao {
+  escreva("Como voce nao quis imprimir os números do intervalo, escrevemos sua mensagem final o mesmo numero de vezes:")
+  de (i = inicio ate fim) {
+    escreva(mensagem)
+  }
+}

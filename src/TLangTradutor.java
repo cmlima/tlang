@@ -343,18 +343,36 @@ public class TLangTradutor extends TLangBaseListener {
 	}
 
 	@Override public void exitControle_de_ate(TLangParser.Controle_de_ateContext ctx) {
-		if (ctx.contr_id() != null && ctx.contr_num(0) != null && ctx.contr_num(1) != null) {
-			String id = ctx.contr_id().ID().getText();
-			ParserRuleContext contexto = ctx.contr_id();
-			if (analisadorSemantico.declarado(id)) {
-				analisadorSemantico.erroJaDeclarado(id, contexto);
-			}
-			int de = Integer.parseInt(ctx.contr_num(0).NUM().getText());
-			int ate = Integer.parseInt(ctx.contr_num(1).NUM().getText());
-			String op_arit = (de <= ate) ? "++" : "--";
-			String op_rel = (de <= ate) ? "<=" : ">=";
-			trecho("for (int " + id + " = " + de + "; " + id + " " + op_rel + " " + ate + "; " + id + op_arit + ")");
+		
+		String id = ctx.ctr_id().ID().getText();
+		ParserRuleContext contexto = ctx.ctr_id();
+		if (analisadorSemantico.declarado(id)) {
+			analisadorSemantico.erroJaDeclarado(id, contexto);
 		}
+
+		String inicio, fim;
+
+		if (ctx.ctr_inicial().ID() != null) {
+			inicio = ctx.ctr_inicial().ID().getText();
+			ParserRuleContext subContexto = ctx.ctr_inicial();
+			if (!analisadorSemantico.declarado(inicio)) {
+				analisadorSemantico.erroNaoDeclarado(inicio, subContexto);
+			}
+		} else {
+			inicio = ctx.ctr_inicial().NUM().getText();
+		}
+
+		if (ctx.ctr_final().ID() != null) {
+			fim = ctx.ctr_final().ID().getText();
+			ParserRuleContext subContexto = ctx.ctr_final();
+			if (!analisadorSemantico.declarado(fim)) {
+				analisadorSemantico.erroNaoDeclarado(fim, subContexto);
+			}
+		} else {
+			fim = ctx.ctr_final().NUM().getText();
+		}
+
+		trecho("for (double " + id + " = " + inicio + "; " + id + "<=" + fim + "; " + id + "++)");
 	}
 
 	@Override public void exitOp_atr(TLangParser.Op_atrContext ctx) { 
@@ -476,12 +494,20 @@ public class TLangTradutor extends TLangBaseListener {
 		trecho("ler.nextDouble");
 	}
 
+	@Override public void exitLeitura_num(TLangParser.Leitura_numContext ctx) { 
+		trecho("; ler.nextLine()");
+	}
+
 	@Override public void enterLeia_txt(TLangParser.Leia_txtContext ctx) { 
 		trecho("ler.nextLine");
 	}
 
 	@Override public void enterLeia_bool(TLangParser.Leia_boolContext ctx) { 
 		trecho("ler.nextBoolean");
+	}
+
+	@Override public void exitLeitura_bool(TLangParser.Leitura_boolContext ctx) { 
+		trecho("; ler.nextLine()");
 	}
 	
 	@Override public void enterEscreva(TLangParser.EscrevaContext ctx) { 

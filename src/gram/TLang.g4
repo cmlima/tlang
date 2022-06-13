@@ -155,7 +155,7 @@ termo
 
 expr_txt: (txt|id) (op_soma txt)*;
 
-// Estruturas de controle
+// Estrutura de controle
 
 // se () {} senaose () {} senao () {}
 estr_cond: controle_cond chave_e bloco chave_d estr_cond_sec* estr_cond_alt?; 
@@ -166,16 +166,18 @@ controle_cond_sec: senaose paren_e expr_bool paren_d;
 
 estr_cond_alt: senao chave_e bloco chave_d;
 
+// Estruturas de repeticao
+
 estr_repet: estr_enquanto | estr_de_ate;
 
 estr_enquanto: controle_enquanto chave_e bloco chave_d;
 controle_enquanto: enquanto paren_e expr_bool paren_d;
 
 estr_de_ate: controle_de_ate chave_e bloco chave_d;
-controle_de_ate: de contr_id contr_atr contr_num ate contr_num;
-contr_id: ID;
-contr_atr: ATR;
-contr_num: NUM;
+controle_de_ate: de '(' ctr_id '=' ctr_inicial ate ctr_final ')';
+ctr_id: ID;
+ctr_inicial: ID|NUM;
+ctr_final: ID|NUM;
 
 // Termos
 
